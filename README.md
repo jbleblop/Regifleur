@@ -2,7 +2,7 @@
 
 ## Intialisation Depot
 
-'''bash 
+```bash 
 git init 
 git remote and origin SSH_REPO
-'''
+```
