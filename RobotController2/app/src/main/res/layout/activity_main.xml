@@ -1,163 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="12dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:columnCount="3"
-    android:rowCount="5"
-    android:background="#FFF">
+    android:layout_height="match_parent">
 
     <!-- Ligne 1 -->
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Stop"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/btnAvancer"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Avancer"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnStop"
+            android:text="Stop"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnSuiviLigne"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Suivi"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnAvancer"
+            android:text="Avancer"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnSuiviLigne"
+            android:text="Suivi"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!-- Ligne 2 -->
-    <Button
-        android:id="@+id/btnGauche"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Gauche"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/btnRetour"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Reculer"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnGauche"
+            android:text="Gauche"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnDroite"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Droite"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnRetour"
+            android:text="Reculer"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnDroite"
+            android:text="Droite"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!-- Ligne 3 -->
-    <Button
-        android:id="@+id/btnOuvrir"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Ouvrir"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/btnFermer"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Fermer"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnOuvrir"
+            android:text="Ouvrir"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnLuminosite"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Luminosité"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnFermer"
+            android:text="Fermer"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnLuminosite"
+            android:text="Luminosité"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!-- Ligne 4 -->
-    <Button
-        android:id="@+id/btnMonter"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Monter"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/btnDescendre"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Descendre"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnMonter"
+            android:text="Monter"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnLireCouleur"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Couleur"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnDescendre"
+            android:text="Descendre"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnLireCouleur"
+            android:text="Couleur"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!-- Ligne 5 -->
-    <Button
-        android:id="@+id/btnChangerDistance"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Seuil"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-    <Button
-        android:id="@+id/btnComparer"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Comparer"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnChangerDistance"
+            android:text="Seuil"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnLangue"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_columnWeight="1"
-        android:text="Langue"
-        android:textSize="20sp"
-        android:layout_margin="6dp"/>
+        <Button
+            android:id="@+id/btnComparer"
+            android:text="Comparer"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    <!-- Zone message -->
+        <Button
+            android:id="@+id/btnLangue"
+            android:text="Langue"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_columnSpan="3"
-        android:textSize="18sp"
-        android:padding="12dp"
-        android:textColor="#333"
-        android:background="#EEE"
-        android:layout_marginTop="12dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:text="Messages..."
+        android:padding="8dp"
+        android:background="#EEEEEE" />
 
-</GridLayout>
+</LinearLayout>
