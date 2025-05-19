@@ -1,5 +1,5 @@
-const int photoRes1 = A0;  // Photo-résistance 1 sur A0
-const int photoRes2 = A1;  // Photo-résistance 2 sur A1
+const int photoRes1 = A14;  // Photo-résistance 1 sur A0
+const int photoRes2 = A15;  // Photo-résistance 2 sur A1
 const int nbMesures = 20;  // Nombre de mesures à stocker
 
 int mesures1[nbMesures];  // Tableau pour stocker les mesures de la photo-résistance 1

@@ -11,6 +11,9 @@
 #define OLED_RESET -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+unsigned long dernierCheckVL53 = 0;
+const unsigned long intervalVL53 = 100; // ms
+
 CytronMD MG(PWM_PWM, 5, 6);
 CytronMD MD(PWM_PWM, 10, 11);
 
@@ -82,7 +85,13 @@ void arreter() {
 
 void suiviLigne() {
   int distance = rangeSensor.getDistance();
-  if (distance > 0 && distance < distanceSeuil) {
+
+  if (distance == -1) {
+    Serial.println("Erreur de mesure VL53L0X !");
+    return;
+  }
+
+  if (distance < distanceSeuil) {
     Serial.print("Obstacle à "); Serial.println(distance);
     arreter();
     modeSuivi = false;
@@ -118,7 +127,7 @@ void suiviLigne() {
 
 void setup() {
   Serial.begin(9600);
-  Serial1.begin(9600);
+  Serial1.begin(9600); // HC-05 branché sur RX1/TX1
 
   for (int i = 0; i < 5; i++) pinMode(irPins[i], INPUT);
 
@@ -146,27 +155,67 @@ void setup() {
   pixy.init();
 }
 
-
 void loop() {
   if (Serial1.available()) {
     val = Serial1.read();
-    Serial.print("Commande reçue : "); Serial.println(val);
+    Serial.print("Commande reçue : ");
+    Serial.println(val);
 
     switch (val) {
+      case '0': 
+        modeSuivi = false; 
+        arreter(); 
+        Serial.println("stop"); 
+        break;
+      case '1': 
+        MG.setSpeed(80); 
+        MD.setSpeed(97); 
+        afficherOLED("Commande", "Avancer"); 
+        Serial.println("avancer"); 
+        break;
+      case '2': 
+        MG.setSpeed(115); 
+        MD.setSpeed(0); 
+        afficherOLED("Commande", "Droite"); 
+        Serial.println("droite"); 
+        break;
+      case '3': 
+        MG.setSpeed(0); 
+        MD.setSpeed(120); 
+        afficherOLED("Commande", "Gauche"); 
+        Serial.println("gauche"); 
+        break;
+      case '4': 
+        MG.setSpeed(-80); 
+        MD.setSpeed(-97); 
+        afficherOLED("Commande", "Retour"); 
+        Serial.println("retour"); 
+        break;
 
-    switch (val) {
-      case '0': modeSuivi = false; arreter(); Serial1.println("stop"); break;
-      case '1': MG.setSpeed(80); MD.setSpeed(97); afficherOLED("Commande", "Avancer"); Serial1.println("avancer"); break;
-      case '2': MG.setSpeed(115); MD.setSpeed(0); afficherOLED("Commande", "Droite"); Serial1.println("droite"); break;
-      case '3': MG.setSpeed(0); MD.setSpeed(120); afficherOLED("Commande", "Gauche"); Serial1.println("gauche"); break;
-      case '4': MG.setSpeed(-80); MD.setSpeed(-97); afficherOLED("Commande", "Retour"); Serial1.println("retour"); break;
+      case '5': 
+        servoMotor1.write(90); 
+        afficherOLED("Servo", "Ouvrir"); 
+        Serial.println("ouvrir"); 
+        break;
+      case '6': 
+        servoMotor1.write(35); 
+        afficherOLED("Servo", "Fermer"); 
+        Serial.println("fermer"); 
+        break;
+      case '7': 
+        servoMotor2.write(180); 
+        servoMotor3.write(0); 
+        afficherOLED("Bras", "Monter"); 
+        Serial.println("monter"); 
+        break;
+      case '8': 
+        servoMotor2.write(10); 
+        servoMotor3.write(170); 
+        afficherOLED("Bras", "Descendre"); 
+        Serial.println("descendre"); 
+        break;
 
-      case '5': servoMotor1.write(90); afficherOLED("Servo", "Ouvrir"); Serial1.println("ouvrir"); break;
-      case '6': servoMotor1.write(35); afficherOLED("Servo", "Fermer"); Serial1.println("fermer"); break;
-      case '7': servoMotor2.write(180); servoMotor3.write(0); afficherOLED("Bras", "Monter"); Serial1.println("monter"); break;
-      case '8': servoMotor2.write(10); servoMotor3.write(170); afficherOLED("Bras", "Descendre"); Serial1.println("descendre"); break;
-
-      case '9':
+      case '9': {
         pixy.ccc.getBlocks();
         if (pixy.ccc.numBlocks) {
           int sig = pixy.ccc.blocks[0].m_signature;
@@ -177,9 +226,9 @@ void loop() {
         } else {
           afficherOLED("Pixy2", "Aucun objet");
         }
-        Serial1.println("couleur");
+        Serial.println("couleur");
         break;
-
+      }
 
       case 'A': {
         mesures1[i] = analogRead(photoRes1);
@@ -188,16 +237,79 @@ void loop() {
         int moy1 = calculerMoyenne(mesures1, nbMesures);
         int moy2 = calculerMoyenne(mesures2, nbMesures);
         afficherOLED("Luminosité", "LDR1: " + String(moy1) + "  LDR2: " + String(moy2));
-        Serial1.println("luminosité lue");
+        Serial.println("luminosité lue");
         break;
       }
 
-      case 'B': modeSuivi = true; afficherOLED("Mode", "Suivi de ligne"); Serial1.println("suivi de ligne"); break;
+      case 'B': 
+        modeSuivi = true; 
+        afficherOLED("Mode", "Suivi de ligne"); 
+        Serial.println("suivi de ligne"); 
+        break;
 
-       case 'C':
+      case 'C': {
         servoMotor1.write(90);  // Ouvrir la pince
-        delay(500);
-        // Lire luminosité après ouverture
+      servoMotor2.write(15);
+    servoMotor3.write(165);
+    delay(1000);
+  pixy.ccc.getBlocks();
+  if (pixy.ccc.numBlocks) {
+    int signature = pixy.ccc.blocks[0].m_signature;
+    String msg = "Signature: " + String(signature);
+    afficherOLED("Pixy2", msg);
+    Serial.println(msg);
+
+    
+
+    // Étape 2 : Fermer la pince
+    servoMotor1.write(37);
+    delay(1000);
+
+    // Étape 3 : Monter la pince
+    servoMotor2.write(100);
+    servoMotor3.write(80);
+    delay(1000);
+
+    if (signature == 1) {
+      // Déplacement à gauche
+      MG.setSpeed(0);
+      MD.setSpeed(135);
+      delay(1250);
+      MG.setSpeed(80);
+      MD.setSpeed(95);
+      delay(1000);
+      arreter();
+    } else if (signature == 2) {
+      // Déplacement à droite
+      MG.setSpeed(120);
+      MD.setSpeed(0);
+      delay(1250);
+      MG.setSpeed(80);
+      MD.setSpeed(95);
+      delay(1000);
+      arreter();
+    } else if (signature == 3) {
+      // Avancer
+      MG.setSpeed(80);
+      MD.setSpeed(95);
+      delay(1250);
+      arreter();
+    } else {
+      afficherOLED("Signature", "Non reconnue");
+      Serial.println("Signature non reconnue");
+      break;
+    }
+
+    // Étape 4 : Descendre la pince
+    servoMotor2.write(15);
+    servoMotor3.write(165);
+    delay(1000);
+
+    // Étape 5 : Ouvrir la pince
+    servoMotor1.write(90);
+    delay(1000);
+
+     delay(500);
         int lum1 = analogRead(photoRes1);
         int lum2 = analogRead(photoRes2);
         int moyenne = (lum1 + lum2) / 2;
@@ -213,12 +325,53 @@ void loop() {
 
           String msg = couleur + " : " + String(moyenne);
           afficherOLED("Luminosité", msg.c_str());
-          Serial1.println(msg);
+          Serial.println(msg);
         } else {
           afficherOLED("Erreur", "Pas d'objet");
-          Serial1.println("Erreur : aucun objet détecté");
+          Serial.println("Erreur : aucun objet détecté");
         }
-        break;
+
+    // Étape 6 : Monter la pince
+    servoMotor2.write(100);
+    servoMotor3.write(80);
+    delay(1000);
+
+    // Revenir à la position initiale
+    if (signature == 1) {
+      // Retour depuis gauche
+      MG.setSpeed(-80);
+      MD.setSpeed(-95);
+      delay(1000);
+      MG.setSpeed(0);
+      MD.setSpeed(-135);
+      delay(1250);
+      
+    } else if (signature == 2) {
+      // Retour depuis droite
+      MG.setSpeed(-80);
+      MD.setSpeed(-95);
+      delay(1000);
+      MG.setSpeed(-120);
+      MD.setSpeed(0);
+      delay(1250);
+      
+    } else if (signature == 3) {
+      // Retour en arrière
+      MG.setSpeed(-80);
+      MD.setSpeed(-95);
+      delay(1250);
+    }
+
+    arreter();
+    afficherOLED("Séquence", "Terminée");
+    Serial1.println("sequence terminee");
+
+  } else {
+    afficherOLED("Pixy2", "Aucun objet");
+    Serial1.println("aucun objet détecté");
+  }
+  break;}
+
 
       case 'D': {
         while (!Serial1.available());
@@ -231,7 +384,6 @@ void loop() {
       }
 
       case 'E': {
-        String msg = "";
         struct Donnee {
           const char* couleur;
           int lum;
@@ -241,46 +393,52 @@ void loop() {
           {"Jaune", lumJaune}
         };
 
-        // Vérifie si tous les lumin sont valides
-        bool ok = true;
-        for (int i = 0; i < 3; i++) {
-          if (donnees[i].lum == -1) {
-            msg += String(donnees[i].couleur) + " : pas de donnée\n";
-            ok = false;
+        bool donneesValides = true;
+        String msgErreur = "";
+
+        for (int j = 0; j < 3; j++) {
+          if (donnees[j].lum == -1) {
+            msgErreur += String(donnees[j].couleur) + " : pas de donnée\n";
+            donneesValides = false;
           }
         }
 
-        if (!ok) {
-          afficherOLED("Erreur", msg.c_str());
-          Serial1.println("Erreur données manquantes");
-          Serial1.println(msg);
+        if (!donneesValides) {
+          afficherOLED("Erreur", msgErreur);
+          Serial.println("Erreur données manquantes");
+          Serial.println(msgErreur);
           break;
         }
 
-        // Tri des couleurs selon la luminosité
-        for (int i = 0; i < 2; i++) {
-          for (int j = i + 1; j < 3; j++) {
-            if (donnees[i].lum > donnees[j].lum) {
-              Donnee tmp = donnees[i];
-              donnees[i] = donnees[j];
-              donnees[j] = tmp;
+        // Tri par luminosité croissante
+        for (int j = 0; j < 2; j++) {
+          for (int k = j + 1; k < 3; k++) {
+            if (donnees[j].lum > donnees[k].lum) {
+              Donnee tmp = donnees[j];
+              donnees[j] = donnees[k];
+              donnees[k] = tmp;
             }
           }
         }
 
-        msg = "Min: " + String(donnees[0].couleur) + "\n";
-        msg += "Moy: " + String(donnees[1].couleur) + "\n";
-        msg += "Max: " + String(donnees[2].couleur);
+        String msg = "Min: " + String(donnees[0].couleur) + "\n" +
+                     "Moy: " + String(donnees[1].couleur) + "\n" +
+                     "Max: " + String(donnees[2].couleur);
 
-        afficherOLED("Comparaison", msg.c_str());
-        Serial1.println("Résultat luminosité :");
-        Serial1.println(msg);
+        afficherOLED("Comparaison", msg);
+        Serial.println("Résultat luminosité :");
+        Serial.println(msg);
         break;
       }
 
-      default: afficherOLED("Commande", "Inconnue"); Serial1.println("commande inconnue"); break;
+      default:
+        afficherOLED("Commande", "Inconnue");
+        Serial.println("commande inconnue");
+        break;
     }
   }
-  if (modeSuivi) suiviLigne();
 
-  }}
+  if (modeSuivi) {
+      suiviLigne();
+  }
+}

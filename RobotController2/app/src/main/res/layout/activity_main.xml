@@ -1,167 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="12dp"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Ligne 1 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_marginBottom="8dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnStop"
-            android:text="Stop"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/btnAvancer"
-            android:text="Avancer"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="6"
+            android:alignmentMode="alignMargins"
+            android:columnOrderPreserved="false"
+            android:layout_marginBottom="16dp"
+            android:useDefaultMargins="true">
 
-        <Button
-            android:id="@+id/btnSuiviLigne"
-            android:text="Suivi"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            <Button android:id="@+id/btnStop" android:text="Stop"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnAvancer" android:text="Avancer"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnSuiviLigne" android:text="Suivi Ligne"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnGauche" android:text="Gauche"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnRetour" android:text="Retour"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnDroite" android:text="Droite"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+
+            <Button android:id="@+id/btnOuvrir" android:text="Ouvrir"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnFermer" android:text="Fermer"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnLuminosite" android:text="Luminosité"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+
+            <Button android:id="@+id/btnMonter" android:text="Monter"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnDescendre" android:text="Descendre"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnLireCouleur" android:text="Lire Couleur"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+
+            <Button android:id="@+id/btnComparer" android:text="Comparer"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnSequence" android:text="Séquence"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+            <Button android:id="@+id/btnChangerDistance" android:text="Changer Distance"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/messageTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Messages"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="#EFEFEF"
+            android:textColor="#000000"
+            android:layout_marginBottom="12dp" />
+
     </LinearLayout>
-
-    <!-- Ligne 2 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_marginBottom="8dp">
-
-        <Button
-            android:id="@+id/btnGauche"
-            android:text="Gauche"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnRetour"
-            android:text="Reculer"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnDroite"
-            android:text="Droite"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Ligne 3 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_marginBottom="8dp">
-
-        <Button
-            android:id="@+id/btnOuvrir"
-            android:text="Ouvrir"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnFermer"
-            android:text="Fermer"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnLuminosite"
-            android:text="Luminosité"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Ligne 4 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_marginBottom="8dp">
-
-        <Button
-            android:id="@+id/btnMonter"
-            android:text="Monter"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnDescendre"
-            android:text="Descendre"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnLireCouleur"
-            android:text="Couleur"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Ligne 5 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <Button
-            android:id="@+id/btnChangerDistance"
-            android:text="Seuil"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnComparer"
-            android:text="Comparer"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btnLangue"
-            android:text="Langue"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/messageTextView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:text="Messages..."
-        android:padding="8dp"
-        android:background="#EEEEEE" />
-
-</LinearLayout>
+</ScrollView>

@@ -69,17 +69,13 @@ Ce projet combine un **robot contrôlé par Arduino** via **Bluetooth (HC-05)** 
 Ligne 1 : Stop | Avancer | Suivi
 Ligne 2 : Gauche | Reculer | Droite
 Ligne 3 : Ouvrir | Fermer | Luminosité
-Ligne 4 : Monter | Descendre | Couleur
-Ligne 5 : Seuil | Comparer | Langue
+Ligne 4 : Monter | Descendre | Lire Couleur
+Ligne 5 : Comparer | Sequence | Changer distance
 ```
 
 ### 📊 Retour de l'état
 
 L'application affiche toutes les réponses de l'Arduino via Bluetooth dans un encart de feedback en bas de l'écran.
-
-### 🌐 Langue
-
-Un bouton permet de passer de **Français ↔ Anglais** dynamiquement (tous les textes de l'app sont traduits).
 
 ---
 

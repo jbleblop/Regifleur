@@ -19,7 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.IOException
 import java.io.OutputStream
@@ -27,7 +26,7 @@ import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
-    private val hc05 = "20:19:07:00:2E:69" // À changer selon ton module
+    private val hc05 = "20:19:07:00:2E:69" // Adapter à ton module
     private val uUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -36,26 +35,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var messageTextView: TextView
 
-    private var langueFr = true
-
     @SuppressLint("MissingPermission")
     private val requestPermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT) { permissions ->
         if (permissions.entries.all { it.value }) {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details
-            }
             connectBluetooth()
         } else {
             toast("Permissions nécessaires")
@@ -124,85 +108,79 @@ class MainActivity : AppCompatActivity() {
             R.id.btnStop to '0',
             R.id.btnAvancer to '1',
             R.id.btnSuiviLigne to 'B',
-           
-R.id.btnGauche to '3',
-R.id.btnRetour to '4',
-R.id.btnDroite to '2',
-R.id.btnOuvrir to '5',
-R.id.btnFermer to '6',
-R.id.btnLuminosite to 'A',
-R.id.btnMonter to '7',
-R.id.btnDescendre to '8',
-R.id.btnLireCouleur to '9',
-R.id.btnComparer to 'E'
-)
-commands.forEach { (id, cmd) ->
-findViewById<Button>(id).setOnClickListener {
-sendCommand(cmd)
-}
-}
-    findViewById<Button>(R.id.btnLangue).setOnClickListener { toggleLanguage() }
-    findViewById<Button>(R.id.btnChangerDistance).setOnClickListener { showSeuilDialog() }
-}
-
-private fun sendCommand(command: Char) {
-    try {
-        val bytes = byteArrayOf(command.code.toByte())
-        outputStream?.write(bytes)
-        appendMessage("Commande envoyée : $command")
-    } catch (e: IOException) {
-        e.printStackTrace()
-        toast("Erreur d’envoi de commande")
-    }
-}
-
-private fun showSeuilDialog() {
-    val input = EditText(this)
-    input.inputType = InputType.TYPE_CLASS_NUMBER
-    AlertDialog.Builder(this)
-        .setTitle("Modifier le seuil")
-        .setView(input)
-        .setPositiveButton("OK") { dialog, _ ->
-            val value = input.text.toString()
-            if (value.isNotEmpty()) {
-                sendCommandString("D$value\n")
-                appendMessage("Seuil changé à $value")
+            R.id.btnGauche to '3',
+            R.id.btnRetour to '4',
+            R.id.btnDroite to '2',
+            R.id.btnOuvrir to '5',
+            R.id.btnFermer to '6',
+            R.id.btnLuminosite to 'A',
+            R.id.btnMonter to '7',
+            R.id.btnDescendre to '8',
+            R.id.btnLireCouleur to '9',
+            R.id.btnComparer to 'E',
+            R.id.btnSequence to 'C' // Le bouton "Séquence"
+        )
+        commands.forEach { (id, cmd) ->
+            findViewById<Button>(id).setOnClickListener {
+                sendCommand(cmd)
             }
-            dialog.dismiss()
         }
-        .setNegativeButton("Annuler") { dialog, _ -> dialog.dismiss() }
-        .show()
-}
 
-private fun sendCommandString(cmd: String) {
-    try {
-        outputStream?.write(cmd.toByteArray())
-    } catch (e: IOException) {
-        e.printStackTrace()
-        toast("Erreur d’envoi")
+        findViewById<Button>(R.id.btnChangerDistance).setOnClickListener { showSeuilDialog() }
     }
-}
 
-private fun toggleLanguage() {
-    langueFr = !langueFr
-    val lang = if (langueFr) "Français" else "English"
-    appendMessage("Langue changée : $lang")
-}
-
-private fun appendMessage(msg: String) {
-    messageTextView.append("\n$msg")
-}
-
-private fun toast(msg: String) {
-    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-}
-
-override fun onDestroy() {
-    super.onDestroy()
-    try {
-        bluetoothSocket?.close()
-    } catch (e: IOException) {
-        e.printStackTrace()
+    private fun sendCommand(command: Char) {
+        try {
+            val bytes = byteArrayOf(command.code.toByte())
+            outputStream?.write(bytes)
+            appendMessage("Commande envoyée : $command")
+        } catch (e: IOException) {
+            e.printStackTrace()
+            toast("Erreur d’envoi de commande")
+        }
     }
-}
+
+    private fun sendCommandString(cmd: String) {
+        try {
+            outputStream?.write(cmd.toByteArray())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            toast("Erreur d’envoi")
+        }
+    }
+
+    private fun showSeuilDialog() {
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_NUMBER
+        AlertDialog.Builder(this)
+            .setTitle("Modifier le seuil")
+            .setView(input)
+            .setPositiveButton("OK") { dialog, _ ->
+                val value = input.text.toString()
+                if (value.isNotEmpty()) {
+                    sendCommandString("D$value")
+                    appendMessage("Seuil changé à $value")
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Annuler") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    private fun appendMessage(msg: String) {
+        messageTextView.append("\n$msg")
+    }
+
+    private fun toast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            bluetoothSocket?.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
 }

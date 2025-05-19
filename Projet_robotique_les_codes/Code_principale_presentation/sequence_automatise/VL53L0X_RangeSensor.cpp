@@ -8,11 +8,14 @@ bool VL53L0X_RangeSensor::begin() {
 
 int VL53L0X_RangeSensor::getDistance() {
     VL53L0X_RangingMeasurementData_t measure;
-    lox.rangingTest(&measure, false);
-
-    if (measure.RangeStatus != 4) { // Pas d'erreur de mesure
-        return measure.RangeMilliMeter;
-    } else {
-        return -1; // Valeur pour "hors de portée"
+    
+    for (int i = 0; i < 3; i++) {
+        lox.rangingTest(&measure, false);
+        if (measure.RangeStatus != 4) {
+            return measure.RangeMilliMeter;
+        }
+        delay(10); // petit délai entre les tentatives
     }
+
+    return -1; // mesure invalide
 }
