@@ -249,15 +249,15 @@ void loop() {
 
       case 'C': {
         servoMotor1.write(90);  // Ouvrir la pince
-      servoMotor2.write(15);
-    servoMotor3.write(165);
-    delay(1000);
-  pixy.ccc.getBlocks();
-  if (pixy.ccc.numBlocks) {
-    int signature = pixy.ccc.blocks[0].m_signature;
-    String msg = "Signature: " + String(signature);
-    afficherOLED("Pixy2", msg);
-    Serial.println(msg);
+        servoMotor2.write(15);
+        servoMotor3.write(165);
+        delay(1000);
+        pixy.ccc.getBlocks();
+        if (pixy.ccc.numBlocks) {
+          int signature = pixy.ccc.blocks[0].m_signature;
+          String msg = "Signature: " + String(signature);
+          afficherOLED("Pixy2", msg);
+        Serial.println(msg);
 
     
 
